@@ -1,0 +1,69 @@
+#Lang file for Terrains
+#Plugin made by ArVdC
+#
+# Use & to specify colors for messages (ex. '&3hello &aworld&3!')
+# Use ' ' ensure your message will be understood as a string.
+# Double the ' character to escape it (ex. 'It''s wonderful')
+# You can customize and reuse the following strings in any another one: <prefix>, <terrain>, <terrains>, <domicile>.
+# Place use the other <placeholders> only in they current message.
+# 
+HeaderPrefix: '&8&l[&2&lTerrains&8&l]&7'
+HeaderTrSingular: '&8[&2terrain&8]&7'
+HeaderTrPlural: '&8[&2terrains&8]&7'
+HeaderDomicile: '&8[&2domicile&8]&7'
+DoNotOwnMessage: <prefix> Vous ne possédez pas ce <terrain>.
+PermissionMessage: <prefix> Vous n'avez la permission requise.
+AlreadyClaimedMessage: <prefix> Ce <terrain> appartient à &e<player>&7.
+LimitReachedMessage: <prefix> Vous avez atteint le maximum de &d<number>&7 <terrains> autorisés pour votre &8[&drang&8].
+OwnLimit: <prefix> Vous pouvez posséder un maximum de &e<number>&7 <terrains>.
+UnderTheLimit: <prefix> Vous vous trouvez sous la limite de protection des <terrains> fixée à y:<limit>.
+InsufficientFundsMessage: <prefix> Vous devez posséder &6<price>&7 pour acheter un <terrain>.
+InsufficientCreditsMessage: <prefix> Il vous manque &6<price>&7."
+RefundMessage: <prefix> Vous récupérez la somme de <price>.
+BuyFreeMessage: <prefix> Vous venez d'acquérir ce <terrain> gratuitement.
+BuyMessage: <prefix> Vous venez d'acquérir ce <terrain> pour &6<price>&7.
+SellMessage: <prefix> Vous venez de revendre ce <terrain> pour &6<price>&7.
+ChargeMessage: <prefix> Vous venez de dépenser &6<price>&7.
+ClearConfirm: <prefix> Entrer à nouveau &e/tr ttVendre&7 (endéans les 10 secondes) pour confirmer.
+AdminSellMessage: <prefix> Vous avez revendu ce <terrain>, &e<owner>&7 vient d'être remboursé de &6<price>&7.
+SoldByAdminMessage: <prefix> Un admin a revendu l'un de vos <terrains>, vous venez d'être remboursé de &6<price>&7.
+MustGroupLandMessage: <prefix> You cannot buy a lone <terrain> until all other <terrains> are in groups of at least &2<MinimumGroupSize>&7.
+WorldGuardMessage: <prefix> Vous ne pouvez acquérir ce <terrain> car il est protégé par WorldGuard.
+DisabledWorldMessage: <prefix> Le plugin est désactivé dans ce monde.
+EnabledAlarmMessage: <prefix> Vous serez prévenu de toute intrusion faite sur vos <terrains>.
+DisabledAlarmMessage: <prefix> Vous ne serez plus prévenu des intrusions faites sur vos <terrains>.
+CoownersList: '<prefix> Voici la liste des joueurs avec qui vous partagez vos <terrains>:'
+NoCoownersList: <prefix> Vous ne partagez de <terrains> avec personne.
+NoOwnedTerrain: <prefix> Vous ne possédez aucun <terrain>.
+NoMoreTerrain: <prefix> Vous ne possédez plus aucun <terrain>.
+NotAnOwner: <prefix> Vous devez posséder au moins un <terrain> pour effectuer cette action.
+NoPlayerOwnedTerrain: <prefix> &e<player>&7 ne posséde actuellement aucun <terrain>.
+NumberOfOwnedTerrain: '<prefix> Vous possédez actuellement &2<number> <terrain(s)> :'
+TerrainDetail: '&7- le <terrain> centré en x: <x>, z: <z> dans le monde <world>.'
+UnclaimedMessage: <prefix> Personne ne possède ce <terrain>.
+InfoSelf: <prefix> Ce <terrain> vous appartient.
+InfoOther: <prefix> Ce <terrain> appartient à &e<owner>&7.
+InfoShared: <prefix> &e<owner>&7 partage ses <terrains> avec vous.
+InfoNonShared: <prefix> &e<owner>&7 ne partage pas ses <terrains> avec vous.
+ShareStatutAlready: <prefix> Vous partagez &2&odéjà&7 vos <terrains> avec &e<player>&7.
+ShareOn: <prefix> Vous partagez désormais vos <terrains> avec &e<player>&7.
+ShareOnConfirm: <prefix> Entrez le nom du joueur avec qui vous voulez partager tous vos <terrains>.
+ShareOff: <prefix> Vous ne partagez désormais &4&oplus&7 vos <terrains> avec &e<player>&7.
+ShareOffConfirm: <prefix> Entrez le nom du joueur avec qui vous ne voulez &4&oplus&7 partager tous vos <terrains>.
+ShareNot: <prefix> Vous ne partagez &4&opas&7 vos <terrains> avec &e<player>&7.
+ShareStateNormal: <prefix> Seuls les joueurs figurant dans la liste de partage du propriétaire peuvent accomplir des actions sur ce <terrain>.
+ShareStatePublic: <prefix> Ce <terrain> est public. Cela sifgnifie que tous les joueurs peuvent y effectuer des actions de base.
+ShareStatePrivate: <prefix> Ce <terrain> est privé. Cela sifgnifie qu'aucun joueur en dehors du propriétaire ne peut y effectuer d'actions.
+AlarmEnterOwned: '<prefix> &e<player>&7 vient d''entrer sur l''un de vos <terrains>:'
+AlarmLeftOwned: '<prefix> &e<player>&7 vient de quitter l''un de vos <terrains>:'
+AlertEnterSelf: '&7Vous entrez dans l''un de vos <terrains>.'
+AlertEnterOwned: '&7Vous entrez dans l''un des <terrains> de &e<owner>&7.'
+AlertLeftSelf: '&7Vous quittez l''un de vos <terrains>.'
+AlertLeftOwned: '&7Vous quittez l''un des <terrains> de &e<owner>&7.'
+DomicileSet: '<prefix> Votre <domicile> se trouve désormais en x: <x>, y: <y>, z: <z> dans le monde <world>'
+NoMoreDomicile: '<prefix> Vous ne possédez plus de <domicile>.'
+NoDomicileSelf: '<prefix> Vous ne possédez pas de <domicile>.'
+NoDomicileOther: '<prefix> <player> ne possède pas de <domicile>.'
+PrivateDomicile: '<prefix> Ce <domicile> se trouve sur un <terrain> privé.'
+TpDomicileSelf: '<prefix> Vous avez été téléporté à votre <domicile>.'
+TpDomicileOther: '<prefix> Vous avez été téléporté au <domicile> de &e<player>&7.'

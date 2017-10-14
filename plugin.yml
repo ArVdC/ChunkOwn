@@ -1,0 +1,29 @@
+name: Terrains
+main: net.vdcraft.arvdc.terrains.Terrains
+version: 1.0.0
+author: ArVdC
+website: vdc.serveminecraft.net
+description: Protection de terrains basée sur les chunks
+load: POSTWORLD
+depend: [Vault]
+softdepend: [WorldGuard, ActionBarAPI, dynmap]
+commands:
+  tr:
+    description: Affiche la page d'aide des [terrains]
+    usage: /<command> help
+    aliases: terrains
+permissions:
+  terrains.resident:
+    description: Nécessaire pour utiliser la commande /<command> acheter
+    default: true
+  terrains.ninja:
+    description: N'actionne pas l'alarme lorsque vous traversez le [terrain] d'un autre joueur
+    default: op
+  terrains.free:
+    description: Acquérir les [terrains] gratuitement.
+    default: op
+  terrains.admin:
+    description: Interagir librement dans les [terrains] des autres joueurs et pouvoir les revendre.
+    default: op
+  terrains.limit.n:
+    description: n détermine le nombre de [terrains] qu'un joueur peut posséder. Si n vaut -1 alors il n'y a pas de limite.
