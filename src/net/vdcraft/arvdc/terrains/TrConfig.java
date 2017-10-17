@@ -9,7 +9,7 @@ import org.bukkit.World;
 /**
  * Loads Plugin and manages Data/Permissions
  *
- * @author Codisimus
+ * @author ArVdC
  */
 public class TrConfig {
     
@@ -49,19 +49,31 @@ public class TrConfig {
             TrCommand.dmMarkerIcon = loadString("DynmapMarkerIcon", "default");
             TrCommand.dmLayer = loadInt("DynmapLayerPrio", 0);
             TrCommand.effectDuration = loadLong("EffectDuration", 100);
-            TrCommand.customCommand = loadString("CustomCommand", "");
+            TrCommand.domicileSetCommand = loadString("DomicileSetCommand", "");
+            TrCommand.domicileClearCommand = loadString("DomicileClearCommand", "");
 
-            String data = loadString("EnabledOnlyInWorlds", "");
-            if (!data.isEmpty()) {
-                for (String s : data.split(", ")) {
+            String dataTr = loadString("EnabledOnlyInWorlds", "");
+            if (!dataTr.isEmpty()) {
+                for (String s : dataTr.split(", ")) {
                     World world = Terrains.server.getWorld(s);
                     if (world != null) {
                         Terrains.worlds.add(world);
                     }
                 }
             }
+
+            String dataTp = loadString("TpDomicileEnableInWorlds", "");
+            if (!dataTp.isEmpty()) {
+                for (String s : dataTp.split(", ")) {
+                    World world = Terrains.server.getWorld(s);
+                    if (world != null) {
+                        Terrains.tpWorlds.add(world);
+                    }
+                }
+            }
+            
         } catch (Exception missingProp) {
-            Terrains.logger.severe("Failed to load ChunkOwn Config");
+            Terrains.logger.severe("Failed to load the config file.");
             missingProp.printStackTrace();
         } finally {
             try {

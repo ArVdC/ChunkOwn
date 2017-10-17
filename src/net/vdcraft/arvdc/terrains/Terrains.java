@@ -30,24 +30,25 @@ import org.bukkit.scheduler.BukkitScheduler;
  * @author ArVdC
  */
 public class Terrains extends JavaPlugin {
-	public static Boolean debug = false; // Switch debug mode on/off
-    static Server server;
-    static Logger logger;
-    static Permission permission;
-    static PluginManager pm;
-    static int lowerLimit;
-    static HashMap<String, Properties> savedData = new HashMap<String, Properties>();
-    static int groupSize;
-    static Properties lastDaySeen;
-    static Plugin plugin;
-    public static Terrains instanceMainClass;
-    public static FileConfiguration langConf;
-    static BukkitScheduler scheduler;
-    static int disownTime;
-    static LinkedList<World> worlds = new LinkedList<World>();
-    static String dataFolder;
-    private static HashMap<String, OwnedTerrain> ownedTerrains = new HashMap<String, OwnedTerrain>();
-    private static HashMap<String, TerrainOwner> terrainOwners = new HashMap<String, TerrainOwner>();
+	public static Boolean debug = true; /* Activate the debug mode */
+	static Server server;
+	static Logger logger;
+	static Permission permission;
+	static PluginManager pm;
+	static int lowerLimit;
+	static HashMap<String, Properties> savedData = new HashMap<String, Properties>();
+	static int groupSize;
+	static Properties lastDaySeen;
+	static Plugin plugin;
+	public static Terrains instanceMainClass;
+	public static FileConfiguration langConf;
+	static BukkitScheduler scheduler;
+	static int disownTime;
+	static LinkedList<World> worlds = new LinkedList<World>();
+	static LinkedList<World> tpWorlds = new LinkedList<World>();
+	static String dataFolder;
+	public static HashMap<String, OwnedTerrain> ownedTerrains = new HashMap<String, OwnedTerrain>();
+	public static HashMap<String, TerrainOwner> terrainOwners = new HashMap<String, TerrainOwner>();
     
     /**
      * Console admin messages
@@ -123,6 +124,7 @@ public class Terrains extends JavaPlugin {
         pm.registerEvents(new TrInteractionListener(), this);
         pm.registerEvents(new TrMvtListener(), this);
         pm.registerEvents(new TrChatListener(), this);
+        pm.registerEvents(new TrOnJoin(), this);
         /* Register the command found in the plugin.yml */
         String commands = this.getDescription().getCommands().toString();
         TrCommand.command = commands.substring(1, commands.indexOf("="));
@@ -191,12 +193,22 @@ public class Terrains extends JavaPlugin {
      */
     private static void loadAll() {
         TrConfig.load();
-        TrLang.load();
+        Terrains.logger.info("The configuration file is loaded.");
+        
+        TrLang.load();        
+    	Terrains.logger.info("The language file is loaded."); // Console loaded file msg
+        
         loadTerrainOwners();
+        Terrains.logger.info("The owners files are loaded.");
 
         for (World world: worlds.isEmpty() ? server.getWorlds() : worlds) {
             loadData(world.getName());
         }
+
+        for (World world: tpWorlds.isEmpty() ? server.getWorlds() : tpWorlds) {
+            loadData(world.getName());
+        }        
+        Terrains.logger.info("The terrains file are loaded.");
     }
 
     /**
@@ -244,13 +256,14 @@ public class Terrains extends JavaPlugin {
 	                    float pitch = Float.parseFloat(pitchNode[1]);
 	                    String[] yawNode = loc[5].split("\\=");
 	                    float yaw = Float.parseFloat(yawNode[1].replace("}", ""));
-	                    Location location = new Location(w, x, y, z, pitch, yaw);
+	                    Location location = new Location(w, x, y, z, yaw, pitch);
 	                    owner.domicile = location;
                     } else {
                     	owner.domicile = null;
                     }
 
-                    terrainOwners.put(owner.name, owner);
+                    terrainOwners.put(owner.name, owner);                    
+                    
                 } catch (Exception loadFailed) {
                     logger.severe("Failed to load "+name);
                     loadFailed.printStackTrace();
@@ -300,6 +313,7 @@ public class Terrains extends JavaPlugin {
                 ownedTerrains.put(world + "'" + ownedTerrain.x + "'" + ownedTerrain.z, ownedTerrain);
                 ownedTerrain.save();
             }
+            
         } catch (Exception loadFailed) {
             logger.severe("Load Failed!");
             loadFailed.printStackTrace();
@@ -332,7 +346,7 @@ public class Terrains extends JavaPlugin {
 
         logger.info("Plugin reloaded.");
         if (player != null) {
-            player.sendMessage("[Terrains] reloaded.");
+            player.sendMessage(TrMsg.format("<prefix> reloaded."));
         }
     }
 
@@ -628,6 +642,16 @@ public class Terrains extends JavaPlugin {
         return worlds.isEmpty() || worlds.contains(world);
     }
 
+    /**
+     * Returns true if the teleport option is enabled in the given World
+     *
+     * @param world The given World
+     * @return True if the teleport option is enabled in the given World
+     */
+    public static boolean tpEnableInWorld(World world) {
+        return tpWorlds.isEmpty() || tpWorlds.contains(world);
+    }
+
     static String chunkToString(Chunk chunk) {
         return chunk.getWorld().getName()+"'"+chunk.getX()+"'"+chunk.getZ();
     }
@@ -711,7 +735,7 @@ public class Terrains extends JavaPlugin {
             return 0;
         }        
         // #1. Block is in a WorldGuard protected region
-      	if (TrCommand.wgSupport) {
+      	if (player != null && TrCommand.wgSupport) {
             Plugin plugin = Terrains.pm.getPlugin("WorldGuard");
             if (plugin != null) {
                 WorldGuardPlugin wg = (WorldGuardPlugin) plugin;
@@ -745,27 +769,27 @@ public class Terrains extends JavaPlugin {
         }        
         // #5. Player is the owner of the event land
         else if (ownedTerrainE.owner.name.equals(player.getName())) result = 5;
-        
+
         // #6. Player is coowner of the event land & this land isn't private
         else if (ownedTerrainE.isCoOwner(player) && !ownedTerrainE.shareState.equals("private")) result = 6;
     
         // #7. The event land is public
-	    else if (ownedTerrainE.shareState.equals("public")) result = 7;
-        
-	 	// #8. The event land is shared on list
-	    else if (ownedTerrainE.shareState.equals("normal")) result = 8;
-        
-	 	// #9. The event land is private
-	    else if (ownedTerrainE.shareState.equals("private")) result = 9;
-	    
+        else if (ownedTerrainE.shareState.equals("public")) result = 7;
+
+        // #8. The event land is shared on list
+        else if (ownedTerrainE.shareState.equals("normal")) result = 8;
+
+        // #9. The event land is private
+        else if (ownedTerrainE.shareState.equals("private")) result = 9;
+
 	    // Check the permission level twice if the Player's land is not the same that the Event's one
     	// Only for restrictions, this will never authorize more than the first check
-    	if (verifyTwice) {
-    		if (result < 5 && ownedTerrainP.owner.name.equals(player.getName())) result = 5;
-        	else if (result < 6 && ownedTerrainP.isCoOwner(player) && !ownedTerrainP.shareState.equals("private")) result = 6;
-        	else if (result < 7 && ownedTerrainP.shareState.equals("public")) result = 7;
-        	else if (result < 8 && ownedTerrainP.shareState.equals("normal")) result = 8;
-        	else if (result < 9 && ownedTerrainP.shareState.equals("private")) result = 9;
+        if (verifyTwice) {
+    		if (ownedTerrainP.owner.name.equals(player.getName())) result = 5;
+        	else if (ownedTerrainP.isCoOwner(player) && !ownedTerrainP.shareState.equals("private")) result = 6;
+        	else if (ownedTerrainP.shareState.equals("public")) result = 7;
+        	else if (ownedTerrainP.shareState.equals("normal")) result = 8;
+        	else if (ownedTerrainP.shareState.equals("private")) result = 9;
     	}
     	// Return the final result
         if (debug) logger.info("Access test returns #" + result);

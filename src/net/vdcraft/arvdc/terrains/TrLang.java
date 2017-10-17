@@ -24,7 +24,6 @@ public class TrLang {
         	copy(Terrains.plugin.getResource("lang.yml"), lgFileYaml);
         }
         Terrains.langConf = YamlConfiguration.loadConfiguration(lgFileYaml); 
-    	Terrains.logger.info("The language file was loaded."); // Console loaded file msg
 
         /* Messages */
         String string = "PLUGIN LANG.YML MUST BE REGENERATED!";

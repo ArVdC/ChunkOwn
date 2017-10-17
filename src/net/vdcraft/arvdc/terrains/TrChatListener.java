@@ -25,9 +25,9 @@ public class TrChatListener implements Listener {
     		Boolean addRemove = player.hasPermission("terrains.PlayerNamePlus") ? true : false;
         	TrCommand.coowner(player, addRemove, coOwnerName);
         	// Remove Permission 
-    		PermissionAttachment attachment = TrCommand.attachmentList.get(player.getUniqueId());
-    		TrCommand.attachmentList.remove(player.getUniqueId());
-    		player.removeAttachment(attachment);	
+    		PermissionAttachment attachment = TrCommand.tempAttachmentList.get(player.getUniqueId());
+    		TrCommand.tempAttachmentList.remove(player.getUniqueId());
+    		player.removeAttachment(attachment);
     	}
     }
 

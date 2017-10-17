@@ -1,5 +1,5 @@
-#Lang file for Terrains
-#Plugin made by ArVdC
+#Lang file du plugin [Terrains]
+# ChunkOwn forké par ArVdC
 #
 # Use & to specify colors for messages (ex. '&3hello &aworld&3!')
 # Use ' ' ensure your message will be understood as a string.
@@ -14,7 +14,7 @@ HeaderDomicile: '&8[&2domicile&8]&7'
 DoNotOwnMessage: <prefix> Vous ne possédez pas ce <terrain>.
 PermissionMessage: <prefix> Vous n'avez la permission requise.
 AlreadyClaimedMessage: <prefix> Ce <terrain> appartient à &e<player>&7.
-LimitReachedMessage: <prefix> Vous avez atteint le maximum de &d<number>&7 <terrains> autorisés pour votre &8[&drang&8].
+LimitReachedMessage: <prefix> Vous avez atteint le maximum de &2<number>&7 <terrains> autorisés pour votre &8[&drang&8].
 OwnLimit: <prefix> Vous pouvez posséder un maximum de &e<number>&7 <terrains>.
 UnderTheLimit: <prefix> Vous vous trouvez sous la limite de protection des <terrains> fixée à y:<limit>.
 InsufficientFundsMessage: <prefix> Vous devez posséder &6<price>&7 pour acheter un <terrain>.

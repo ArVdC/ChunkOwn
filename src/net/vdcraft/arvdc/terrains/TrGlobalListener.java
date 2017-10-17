@@ -1,6 +1,5 @@
 package net.vdcraft.arvdc.terrains;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LeashHitch;
@@ -11,15 +10,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.*;
 
 /**
  * Listens for griefing and other annoying interaction events
  *
- * @author Codisimus @author ArVdC
+ * @author ArVdC
  */
 public class TrGlobalListener implements Listener {
 
@@ -171,7 +168,8 @@ public class TrGlobalListener implements Listener {
     	Block blockE = event.getBlock();
         // Only permit for 'coowner' or more authorized
     	if (Terrains.canInteractHere(player, blockE) > 6) {
-    		if (Terrains.debug) Terrains.logger.info("Prevent " + player.getName() + " from ignite a block."); // Debug
+    		if (Terrains.debug && player != null) Terrains.logger.info("Prevent " + player.getName() + " from ignite a block."); // Debug
+    		else Terrains.logger.info("Prevent block from igniting in an owned chunk."); // Debug
             event.setCancelled(true);
         }
     }
@@ -185,7 +183,7 @@ public class TrGlobalListener implements Listener {
     public void onBlockSpread(BlockSpreadEvent event) {
     	Block blockE = event.getBlock();
     	// Only permit for 'under the protection limit' or more authorized
-        if (event.getSource().getType() == Material.FIRE && Terrains.canInteractHere(null, blockE) > 3) {
+        if (Terrains.canInteractHere(null, blockE) > 3) {
     		if (Terrains.debug) Terrains.logger.info("Prevent fire spread in an owned chunk."); // Debug
             event.setCancelled(true);
         }
@@ -274,17 +272,17 @@ public class TrGlobalListener implements Listener {
     }
 
     /**
-     * Hangings within an OwnedChunk can only be broken by the Owner, a Co-Owner, or an Admin
-     *
-     * @param event The HangingBreakEvent that occurred
-     */
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void onHangingBreak(HangingBreakEvent event) {
-        if (event.getCause() != RemoveCause.ENTITY) {
-    		if (Terrains.debug) Terrains.logger.info("Prevent " + event.getCause() + ", don't exactly know why."); // Debug
-            event.setCancelled(true);
-        }
-    }
+	 * Hangings within an OwnedChunk can only be broken by the Owner, a Co-Owner, or an Admin
+	 *
+	 * @param event The HangingBreakEvent that occurred
+	 */
+	//@EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
+	//public void onHangingBreak(HangingBreakEvent event) {
+	//	if (event.getCause() != RemoveCause.ENTITY) {
+	//		if (Terrains.debug) Terrains.logger.info("Prevent " + event.getCause() + ", don't exactly know why."); // Debug
+	//		event.setCancelled(true);
+	//	}
+	//} TODO ... OR NOT TODO ?????
 
     /**
      * Hangings within an OwnedChunk can only be broken by the Owner, a Co-Owner, or an Admin

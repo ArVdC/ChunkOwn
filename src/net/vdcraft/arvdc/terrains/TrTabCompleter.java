@@ -50,6 +50,34 @@ public class TrTabCompleter implements TabCompleter {
 		}
 		return trCmdArgsList;
 	}
+		
+	List<String> getAllOwners(Player player) {
+		String playerName = player.getName();
+		List<String> ownersList = new ArrayList<String>();
+		for (OwnedTerrain ownedTerrain: Terrains.getOwnedTerrains()) { // Pour chaque OwnedTerrain existant
+			if (!ownedTerrain.owner.name.toLowerCase().equals(playerName.toLowerCase())) { // Si le Joueur ne se désigne pas lui-même
+				if (!ownersList.contains(ownedTerrain.owner.name)) { // Et si le owner n'est pas déjà dans la liste
+					ownersList.add(ownedTerrain.owner.name);// Ajouter ce owner à la liste
+				}
+			}
+		}
+		return ownersList;
+	}
+	
+	List<String> getPartages(Player player) {
+		String playerName = player.getName();
+		List<String> partagesList = new ArrayList<String>();
+		for (OwnedTerrain ownedTerrain: Terrains.getOwnedTerrains()) { // Pour chaque OwnedTerrain existant
+			for (String coOwner : Terrains.getOwner(ownedTerrain.owner.name).coOwners) { // Pour Chaque coOwner existant
+				if (coOwner.toLowerCase().equals(playerName.toLowerCase())) { // Si le Joueur est coOwner
+					if (!partagesList.contains(ownedTerrain.owner.name)) { // Et si le owner n'est pas déjà dans la liste
+					partagesList.add(ownedTerrain.owner.name);// Ajouter ce owner à la liste
+					}
+				}
+			}
+		}
+		return partagesList;
+	}
 
 	/****************
 	***** EVENT *****
@@ -76,16 +104,24 @@ public class TrTabCompleter implements TabCompleter {
 						if(verif.getName().toLowerCase().startsWith(args[1].toLowerCase()) && !verif.getName().toLowerCase().equals(sender.getName().toLowerCase())) outputArgsList.add(verif.getName());
 					}
 				}
-				else if (args[0].toLowerCase().equalsIgnoreCase("partageMoins") || args[0].toLowerCase().equalsIgnoreCase("domicile")) {
+				else if (args[0].toLowerCase().equalsIgnoreCase("partageMoins")) {
 					Player player = ((Player)sender).getPlayer();
 					String playerName = player.getName();
 					for (String verif : Terrains.getOwner(playerName).coOwners) {
 						if(verif.toLowerCase().startsWith(args[1].toLowerCase())) outputArgsList.add(verif);
 					}
 				}
+				else if (args[0].toLowerCase().equalsIgnoreCase("domicile")) {
+					Player player = ((Player)sender).getPlayer();
+					// TODO Si le joueur est coOwner de qqn
+					for (String verif : getPartages(player)) {
+						if(verif.toLowerCase().startsWith(args[1].toLowerCase())) outputArgsList.add(verif);
+					}
+				}
 				else if (args[0].toLowerCase().equalsIgnoreCase("toutVendre") && Terrains.hasPermission(sender.getName(), "admin")) {
-					for(Player verif : Terrains.server.getOnlinePlayers()) {
-						if(verif.getName().toLowerCase().startsWith(args[1].toLowerCase()) && !verif.getName().toLowerCase().equals(sender.getName().toLowerCase())) outputArgsList.add(verif.getName());
+					Player player = ((Player)sender).getPlayer();
+					for(String verif : getAllOwners(player)) { // TODO liste des Owners
+						if(verif.toLowerCase().startsWith(args[1].toLowerCase())) outputArgsList.add(verif);
 					}
 				}
 			}

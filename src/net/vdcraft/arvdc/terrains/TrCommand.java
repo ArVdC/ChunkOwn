@@ -38,12 +38,14 @@ public class TrCommand implements CommandExecutor {
     public static String dmMarkerIcon;
     public static int dmLayer;
     public static long effectDuration;
-    public static String customCommand;
+    public static String domicileSetCommand;
+    public static String domicileClearCommand;
     private static enum Action { RL, RELOAD, HELP, INFO, ACHETER, VENDRE, TOUTVENDRE, LISTE, PARTAGEPLUS, PARTAGEMOINS, PARTAGELISTE, STATUTPUBLIC, STATUTNORMAL, STATUTPRIVE, ALARM, DOMICILE, DOMICILESET };
     private static HashMap<Player, LinkedList<Location>> terrainIsFree = new HashMap<Player, LinkedList<Location>>();
     private static HashMap<Player, LinkedList<Location>> terrainIsOwned = new HashMap<Player, LinkedList<Location>>();
     private static HashMap<Player, LinkedList<Location>> terrainIsMine = new HashMap<Player, LinkedList<Location>>();
-    public static HashMap<UUID, PermissionAttachment> attachmentList = new HashMap<UUID, PermissionAttachment>();
+    public static HashMap<UUID, PermissionAttachment> tempAttachmentList = new HashMap<UUID, PermissionAttachment>();
+    public static HashMap<UUID, PermissionAttachment> domicileAttachmentList = new HashMap<UUID, PermissionAttachment>();
 
     /**
      * Listens for Terrains commands to execute them
@@ -65,21 +67,21 @@ public class TrCommand implements CommandExecutor {
             }
             return true;
         }
-        
+
         Player player = (Player) sender;
-
-        //Cancel if the Player is in a disabled World
-        if (!Terrains.enabledInWorld(player.getWorld())) {
-            player.sendMessage(TrMsg.disabledWorld);
-            return true;
-        }
-
+        
         //Display help page if the Player did not add any arguments
         if (args.length == 0) {
             sendHelp(player);
             return true;
         }
-
+        
+        //Cancel if the Player is in a disabled World
+        if ((args[0].toLowerCase().equals("domicile") && !Terrains.tpEnableInWorld(player.getWorld())) || (!args[0].toLowerCase().equals("domicile") && !Terrains.enabledInWorld(player.getWorld()))) {
+            player.sendMessage(TrMsg.disabledWorld);
+            return true;
+        }
+        
         Action action;
 
         try {
@@ -121,9 +123,9 @@ public class TrCommand implements CommandExecutor {
             switch (args.length) {
             case 1:
             	if (Terrains.hasPermission(player, "clearConfirm")) {
-            		PermissionAttachment attachment = attachmentList.get(player.getUniqueId());
+            		PermissionAttachment attachment = tempAttachmentList.get(player.getUniqueId());
             		if (attachment != null) player.removeAttachment(attachment);
-            		attachmentList.remove(player.getUniqueId());
+            		tempAttachmentList.remove(player.getUniqueId());
                 	toutVendre(player);
                     return true;
             	} else if (!Terrains.isAnOwner(player.getName())) {
@@ -133,7 +135,7 @@ public class TrCommand implements CommandExecutor {
                     player.sendMessage(TrMsg.clearConfirm);
                     PermissionAttachment attachment = player.addAttachment(Terrains.plugin,200);
             		attachment.setPermission("terrains."+"clearConfirm", true);
-            		attachmentList.put(player.getUniqueId(), attachment);
+            		tempAttachmentList.put(player.getUniqueId(), attachment);
                     return true;
             	}
             case 2:
@@ -159,7 +161,7 @@ public class TrCommand implements CommandExecutor {
         		player.sendMessage(TrMsg.shareOnConfirm);
                 PermissionAttachment attachment = player.addAttachment(Terrains.plugin,200);
         		attachment.setPermission("terrains."+"PlayerNamePlus", true);
-        		attachmentList.put(player.getUniqueId(), attachment);
+        		tempAttachmentList.put(player.getUniqueId(), attachment);
         	}
 	        return true;
 
@@ -171,7 +173,7 @@ public class TrCommand implements CommandExecutor {
         		player.sendMessage(TrMsg.shareOffConfirm);
                 PermissionAttachment attachment = player.addAttachment(Terrains.plugin,200);
         		attachment.setPermission("terrains."+"PlayerNameMoins", true);
-        		attachmentList.put(player.getUniqueId(), attachment);
+        		tempAttachmentList.put(player.getUniqueId(), attachment);
         	}
 	        return true;
 
@@ -198,7 +200,7 @@ public class TrCommand implements CommandExecutor {
         case DOMICILE:
         	if (args.length == 2) {
 	            String coOwner = args[args.length - 1];
-	            domicileTpAmi(player, coOwner);
+	            domicilePartageTp(player, coOwner);
         	} else {
 	        	domicileTp(player);
         	}
@@ -211,7 +213,7 @@ public class TrCommand implements CommandExecutor {
         default: break;
         }        
 
-        sendHelp(player);
+        player.sendMessage(TrMsg.format("<prefix> §6/"+command+": help:§f Afficher le menu d'aide du plugin §8[§2Terrains§8]§f."));
         return true;
     }
 
@@ -255,7 +257,7 @@ public class TrCommand implements CommandExecutor {
 
         if (wgSupport) {
             Plugin plugin = Terrains.pm.getPlugin("WorldGuard");
-            if (plugin != null) {
+            if (player != null && plugin != null) {
                 WorldGuardPlugin wg = (WorldGuardPlugin) plugin;
                 for (Block block: Terrains.getBlocks(chunk)) {
                     if (!wg.canBuild(player, block)) {
@@ -652,7 +654,7 @@ public class TrCommand implements CommandExecutor {
             player.sendMessage(TrMsg.noDomicileSelf);
     		return;
     	}
-    	
+		
     	// Charge the Player
     	Econ.charge(player, Econ.domicileTpPrice);
     	
@@ -670,7 +672,7 @@ public class TrCommand implements CommandExecutor {
      * @param player The Player to teleport
      * @param coOwner The Domicile's coOwner where teleport the Player
      */
-    public static void domicileTpAmi(Player player, String coOwner) {
+    public static void domicilePartageTp(Player player, String coOwner) {
 
         // Redirect if the Player target himself
     	if (player.getName().equals(coOwner)) {
@@ -692,11 +694,11 @@ public class TrCommand implements CommandExecutor {
     		return;
     	}
     	
-		OwnedTerrain terrain = Terrains.findOwnedTerrainByBlock(owner.domicile.getBlock()); // TODO Error !!!
+		OwnedTerrain terrain = Terrains.findOwnedTerrainByBlock(owner.domicile.getBlock()); // TODO Error !!! Réglé ???
     	
         // Cancel if the coOwner doesn't share his Terrains with the Player
-    	if (terrain.isCoOwner(player)) {
-            player.sendMessage(TrMsg.infoNonShared);
+    	if (!terrain.isCoOwner(player)) {
+            player.sendMessage(TrMsg.infoNonShared.replace("<owner>", owner.name));
     		return;
     	}
     	
@@ -710,7 +712,7 @@ public class TrCommand implements CommandExecutor {
     	Econ.charge(player, Econ.domicileFriendPrice);
 
     	// Message the Player
-    	owner.sendMessage(TrMsg.tpDomicileOther.replace("<player>", coOwner));
+    	player.sendMessage(TrMsg.tpDomicileOther.replace("<player>", coOwner));
     	
     	// Teleport the Player
     	player.teleport((owner.domicile));
@@ -778,8 +780,13 @@ public class TrCommand implements CommandExecutor {
         // Add a Dynmap marker on the map
         if (dmSupport) AddOrMoveDynmapDomicileMarker(player, player.getLocation());
         
+        // Add permission
+        PermissionAttachment attachment = player.addAttachment(Terrains.plugin);
+		attachment.setPermission("terrains."+"tpdomicile", true);
+		domicileAttachmentList.put(player.getUniqueId(), attachment);
+		
         // Custom command on Domicile create
-        if (!customCommand.equals("")) player.performCommand("/"+customCommand.replace("/",""));
+        if (!domicileSetCommand.isEmpty()) Terrains.server.dispatchCommand(Terrains.server.getConsoleSender(), domicileSetCommand.replace("/","").replace("<player>", player.getName()));
         
     }
 
@@ -802,8 +809,14 @@ public class TrCommand implements CommandExecutor {
     	}
         // Remove the Dynmap marker on the map
         if (dmSupport) removeDynmapDomicileMarker(player);
+        
+		// Remove permission
+		PermissionAttachment attachment = TrCommand.domicileAttachmentList.get(player.getUniqueId());
+		TrCommand.domicileAttachmentList.remove(player.getUniqueId());
+		player.removeAttachment(attachment);
+        
         // Custom command on Domicile remove
-        if (!customCommand.equals("")) player.performCommand("/"+customCommand.replace("/",""));
+        if (!domicileClearCommand.isEmpty()) Terrains.server.dispatchCommand(Terrains.server.getConsoleSender(), domicileClearCommand.replace("/","").replace("<player>", player.getName()));
     }
         
     /**
@@ -873,8 +886,9 @@ public class TrCommand implements CommandExecutor {
             player.sendMessage("§6/"+command+" statutPublic:§f Tous les joueurs pourront effectuer des actions de base sur ce §8[§2terrain§8]§f, mais pas y construire.");
             player.sendMessage("§6/"+command+" statutPrive:§f En dehors du propriétaire, aucun joueur ne pourra effectuer la moindre action sur ce §8[§2terrain§8]§f.");
             player.sendMessage("§6/"+command+" alarm:§f Activer ou non le système d'alarme qui vous préviendra de toute intrusion sur vos §8[§2terrains§8]§f.");
-        	player.sendMessage("§6/"+command+" domicile [<joueur>]:§f Vous téléporter à votre §8[§2domicile§8]§f ou celui d'un ami.");
-        	player.sendMessage("§6/"+command+" domicileSet:§f Mémoriser votre position actuelle comme étant votre §8[§2domicile§8]§f.");
+        	player.sendMessage("§6/"+command+" domicile:§f Vous téléporter à votre §8[§2domicile§8]§f pour " + Econ.format(Econ.domicileTpPrice) + ".");
+        	player.sendMessage("§6/"+command+" domicile <joueur>:§f Vous téléporter au §8[§2domicile§8]§f d'un joueur qui partage ses §8[§2terrains§8]§f avec vous, pour " + Econ.format(Econ.domicileFriendPrice) + ".");
+        	player.sendMessage("§6/"+command+" domicileSet:§f Mémoriser votre position actuelle comme étant votre §8[§2domicile§8]§f. La caution coûte " + Econ.format(Econ.domicileSetPrice) + ".");
         }
         if (Terrains.hasPermission(player, "admin")) {
             player.sendMessage("§6/"+command+" toutVendre <joueur>:§f Revendre tous les 8[§2terrains§8]§f d'un joueur.");

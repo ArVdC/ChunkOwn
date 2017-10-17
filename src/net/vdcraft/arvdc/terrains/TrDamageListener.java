@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 /**
  * Block PvP within Owned Chunks which have protection
  *
- * @author Codisimus @author ArVdC
+ * @author ArVdC
  */
 public class TrDamageListener implements Listener {
     @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)

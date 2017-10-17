@@ -3,7 +3,7 @@ main: net.vdcraft.arvdc.terrains.Terrains
 version: 1.0.0
 author: ArVdC
 website: vdc.serveminecraft.net
-description: Protection de terrains basée sur les chunks
+description: Plugin de protection de terrains basée sur les chunks
 load: POSTWORLD
 depend: [Vault]
 softdepend: [WorldGuard, ActionBarAPI, dynmap]
