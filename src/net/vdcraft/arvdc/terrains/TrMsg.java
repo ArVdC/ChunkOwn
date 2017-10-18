@@ -66,6 +66,7 @@ public class TrMsg {
     public static String privateDomicile;
     public static String tpDomicileSelf;
     public static String tpDomicileOther;
+    public static String shortHelpMsg;
     /**
      * Adds various Unicode characters and colors to a string
      *

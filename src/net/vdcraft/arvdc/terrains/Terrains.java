@@ -50,94 +50,94 @@ public class Terrains extends JavaPlugin {
 	public static HashMap<String, OwnedTerrain> ownedTerrains = new HashMap<String, OwnedTerrain>();
 	public static HashMap<String, TerrainOwner> terrainOwners = new HashMap<String, TerrainOwner>();
     
-    /**
-     * Console admin messages
-     *
-     */
-    public static String missValueMsg = "Missing value for";
-    public static String noTicketMsg = "DO NOT POST A TICKET FOR THIS MESSAGE, IT WILL JUST BE IGNORED";
-    
-    /**
-     * Calls methods to load this Plugin when it is enabled
-     *
-     */
-    @Override
-    public void onEnable () {
-        server = getServer();
-        logger = getLogger();
-        pm = server.getPluginManager();
-        plugin = this;
-        scheduler = server.getScheduler();
-
-        /* Rebooted version Msg */
-        logger.info("[Terrains] is the Codisimus [ChunkOwn] plugin forked by ArVdC for MC 1.12 in a french version.");
-         
-
-        /* Disable this plugin if Vault is not present */
-        if (!pm.isPluginEnabled("Vault")) {
-            logger.severe("Please install Vault in order to use this plugin!");
-            pm.disablePlugin(this);
-            return;
-        }
-
-        /* Create data folders */
-        File dir = this.getDataFolder();
-        if (!dir.isDirectory()) {
-            dir.mkdir();
-        }
-
-        dataFolder = dir.getPath();
-
-        dir = new File(dataFolder+"/Terrains");
-        if (!dir.isDirectory()) {
-            dir.mkdir();
-        }
-
-        dir = new File(dataFolder+"/Owners");
-        if (!dir.isDirectory()) {
-            dir.mkdir();
-        }
-
-        /* Link Permissions/Economy */
-        RegisteredServiceProvider<Permission> permissionProvider =
-                getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null) {
-            permission = permissionProvider.getProvider();
-        }
-
-        RegisteredServiceProvider<Economy> economyProvider =
-                getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) {
-            Econ.economy = economyProvider.getProvider();
-        }
-
-        loadAll();
-
-        /* Register Events */
-        pm.registerEvents(new TrGlobalListener(), this);
-        pm.registerEvents(new TrItemFrameListener(), this);
-        pm.registerEvents(new TrArmorStandListener(), this);
-        pm.registerEvents(new TrVehicleListener(), this);
-        pm.registerEvents(new TrAnimalsListener(), this);
-        pm.registerEvents(new TrDamageListener(), this);
-        pm.registerEvents(new TrExplosionListener(), this);
-        pm.registerEvents(new TrInteractionListener(), this);
-        pm.registerEvents(new TrMvtListener(), this);
-        pm.registerEvents(new TrChatListener(), this);
-        pm.registerEvents(new TrOnJoin(), this);
-        /* Register the command found in the plugin.yml */
-        String commands = this.getDescription().getCommands().toString();
-        TrCommand.command = commands.substring(1, commands.indexOf("="));
-        getCommand(TrCommand.command).setExecutor(new TrCommand());
-        /* Register the tab completion list */
+	/**
+	 * Console admin messages
+	 *
+	 */
+	public static String missValueMsg = "Missing value for";
+	public static String noTicketMsg = "DO NOT POST A TICKET FOR THIS MESSAGE, IT WILL JUST BE IGNORED";
+	
+	/**
+	 * Calls methods to load this Plugin when it is enabled
+	 *
+	 */
+	@Override
+	public void onEnable () {
+	    server = getServer();
+	    logger = getLogger();
+	    pm = server.getPluginManager();
+	    plugin = this;
+	    scheduler = server.getScheduler();
+	
+	    /* Rebooted version Msg */
+	    logger.info("[Terrains] is the Codisimus [ChunkOwn] plugin forked by ArVdC for MC 1.12 in a french version.");
+	     
+	
+	    /* Disable this plugin if Vault is not present */
+	    if (!pm.isPluginEnabled("Vault")) {
+	        logger.severe("Please install Vault in order to use this plugin!");
+	        pm.disablePlugin(this);
+	        return;
+	    }
+	
+	    /* Create data folders */
+	    File dir = this.getDataFolder();
+	    if (!dir.isDirectory()) {
+	        dir.mkdir();
+	    }
+	
+	    dataFolder = dir.getPath();
+	
+	    dir = new File(dataFolder+"/Terrains");
+	    if (!dir.isDirectory()) {
+	        dir.mkdir();
+	    }
+	
+	    dir = new File(dataFolder+"/Owners");
+	    if (!dir.isDirectory()) {
+	        dir.mkdir();
+	    }
+	
+	    /* Link Permissions/Economy */
+	    RegisteredServiceProvider<Permission> permissionProvider =
+	            getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+	    if (permissionProvider != null) {
+	        permission = permissionProvider.getProvider();
+	    }
+	
+	    RegisteredServiceProvider<Economy> economyProvider =
+	            getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+	    if (economyProvider != null) {
+	        Econ.economy = economyProvider.getProvider();
+	    }
+	
+	    loadAll();
+	
+	    /* Register Events */
+	    pm.registerEvents(new TrGlobalListener(), this);
+	    pm.registerEvents(new TrItemFrameListener(), this);
+	    pm.registerEvents(new TrArmorStandListener(), this);
+	    pm.registerEvents(new TrVehicleListener(), this);
+	    pm.registerEvents(new TrAnimalsListener(), this);
+	    pm.registerEvents(new TrDamageListener(), this);
+	    pm.registerEvents(new TrExplosionListener(), this);
+	    pm.registerEvents(new TrInteractionListener(), this);
+	    pm.registerEvents(new TrMvtListener(), this);
+	    pm.registerEvents(new TrChatListener(), this);
+	    pm.registerEvents(new TrOnJoin(), this);
+	    /* Register the command found in the plugin.yml */
+	    String commands = this.getDescription().getCommands().toString();
+	    TrCommand.command = commands.substring(1, commands.indexOf("="));
+	    getCommand(TrCommand.command).setExecutor(new TrCommand());
+	    /* Register the tab completion list */
 		getCommand(TrCommand.command).setTabCompleter(new TrTabCompleter());
-
-        /* Schedule repeating tasks */
-        TrCommand.animateIsFree();
-        TrCommand.animateIsOwned();
-        TrCommand.animateIsMine();
-
-    }
+	
+	    /* Schedule repeating tasks */
+	    TrCommand.animateIsFree();
+	    TrCommand.animateIsOwned();
+	    TrCommand.animateIsMine();
+	
+	}
 
     /**
      * Returns true if the given Player has the specific permission
@@ -203,12 +203,8 @@ public class Terrains extends JavaPlugin {
 
         for (World world: worlds.isEmpty() ? server.getWorlds() : worlds) {
             loadData(world.getName());
-        }
-
-        for (World world: tpWorlds.isEmpty() ? server.getWorlds() : tpWorlds) {
-            loadData(world.getName());
-        }        
-        Terrains.logger.info("The terrains file are loaded.");
+        }   
+        Terrains.logger.info("The terrains files are loaded.");
     }
 
     /**

@@ -87,6 +87,7 @@ public class TrLang {
         TrMsg.privateDomicile = loadString("PrivateDomicile", string);
         TrMsg.tpDomicileSelf = loadString("TpDomicileSelf", string);
         TrMsg.tpDomicileOther = loadString("TpDomicileOther", string);
+        TrMsg.shortHelpMsg = loadString("ShortHelpMsg", string);
     }
 
     /**

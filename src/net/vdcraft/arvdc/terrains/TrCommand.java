@@ -72,7 +72,7 @@ public class TrCommand implements CommandExecutor {
         
         //Display help page if the Player did not add any arguments
         if (args.length == 0) {
-            sendHelp(player);
+            player.sendMessage(TrMsg.shortHelpMsg);
             return true;
         }
         
@@ -212,8 +212,6 @@ public class TrCommand implements CommandExecutor {
 
         default: break;
         }        
-
-        player.sendMessage(TrMsg.format("<prefix> §6/"+command+": help:§f Afficher le menu d'aide du plugin §8[§2Terrains§8]§f."));
         return true;
     }
 
@@ -694,7 +692,7 @@ public class TrCommand implements CommandExecutor {
     		return;
     	}
     	
-		OwnedTerrain terrain = Terrains.findOwnedTerrainByBlock(owner.domicile.getBlock()); // TODO Error !!! Réglé ???
+		OwnedTerrain terrain = Terrains.findOwnedTerrainByBlock(owner.domicile.getBlock());
     	
         // Cancel if the coOwner doesn't share his Terrains with the Player
     	if (!terrain.isCoOwner(player)) {
