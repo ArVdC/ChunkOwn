@@ -77,7 +77,7 @@ public class TrCommand implements CommandExecutor {
         }
         
         //Cancel if the Player is in a disabled World
-        if ((args[0].toLowerCase().equals("domicile") && !Terrains.tpEnableInWorld(player.getWorld())) || (!args[0].toLowerCase().equals("domicile") && !Terrains.enabledInWorld(player.getWorld()))) {
+        if ((args[0].toLowerCase().equals("domicile") && !Terrains.tpEnableInWorld(player.getWorld())) || (!args[0].toLowerCase().equals("domicile") && !args[0].toLowerCase().equals("reload") && !args[0].toLowerCase().equals("help") && !Terrains.enabledInWorld(player.getWorld()))) {
             player.sendMessage(TrMsg.disabledWorld);
             return true;
         }

@@ -71,7 +71,7 @@ AlertEnterSelf: '&7Vous entrez dans l''un de vos <terrains>.'
 AlertEnterOwned: '&7Vous entrez dans l''un des <terrains> de &e<owner>&7.'
 AlertLeftSelf: '&7Vous quittez l''un de vos <terrains>.'
 AlertLeftOwned: '&7Vous quittez l''un des <terrains> de &e<owner>&7.'
-DomicileSet: <prefix> Votre <domicile> se trouve désormais en x: <x>, y: <y>, z: <z> dans le monde <world>
+DomicileSet: <prefix> 'Votre <domicile> se trouve désormais en x: <x>, y: <y>, z: <z> dans le monde <world>'
 #
 # /* Domicile Messages */
 NoMoreDomicile: <prefix> Vous ne possédez plus de <domicile>.
@@ -82,4 +82,4 @@ TpDomicileSelf: <prefix> Vous avez été téléporté à votre <domicile>.
 TpDomicileOther: <prefix> Vous avez été téléporté au <domicile> de &e<player>&7.
 #
 # /* Help Messages */
-ShortHelpMsg: '<prefix> &6/tr help:&f Afficher le menu d'aide du plugin <prefix>.'
+ShortHelpMsg: '<prefix> &6/tr help:&f Afficher le menu d''aide du plugin <prefix>.'

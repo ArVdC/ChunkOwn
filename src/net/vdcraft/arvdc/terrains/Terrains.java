@@ -30,7 +30,7 @@ import org.bukkit.scheduler.BukkitScheduler;
  * @author ArVdC
  */
 public class Terrains extends JavaPlugin {
-	public static Boolean debug = true; /* Activate the debug mode */
+	public static Boolean debug = false; /* Activate the debug mode */
 	static Server server;
 	static Logger logger;
 	static Permission permission;

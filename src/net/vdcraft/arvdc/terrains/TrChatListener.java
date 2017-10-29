@@ -20,7 +20,7 @@ public class TrChatListener implements Listener {
 		String coOwnerName = event.getMessage();
     	Player player = event.getPlayer();
     
-    	if (Terrains.hasPermission(player, "PlayerNamePlus") || Terrains.hasPermission(player, "PlayerNameMoins")) {
+    	if ((Terrains.hasPermission(player, "PlayerNamePlus") || Terrains.hasPermission(player, "PlayerNameMoins")) && !player.isOp()) {
     		event.setCancelled(true);
     		Boolean addRemove = player.hasPermission("terrains.PlayerNamePlus") ? true : false;
         	TrCommand.coowner(player, addRemove, coOwnerName);
