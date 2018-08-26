@@ -1,6 +1,7 @@
 name: Terrains
 main: net.vdcraft.arvdc.terrains.Terrains
-version: 1.0.0
+api-version: 1.12.2
+version: 1.0.2
 author: ArVdC
 website: vdc.serveminecraft.net
 description: Plugin de protection de terrains basée sur les chunks
