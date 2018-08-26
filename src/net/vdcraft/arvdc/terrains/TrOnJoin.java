@@ -14,7 +14,8 @@ import org.bukkit.permissions.PermissionAttachment;
  */
 public class TrOnJoin implements Listener {
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @SuppressWarnings("unlikely-arg-type")
+	@EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
     	
     	Player player = event.getPlayer();    	
