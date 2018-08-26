@@ -49,7 +49,7 @@ public class Terrains extends JavaPlugin {
 	static String dataFolder;
 	public static HashMap<String, OwnedTerrain> ownedTerrains = new HashMap<String, OwnedTerrain>();
 	public static HashMap<String, TerrainOwner> terrainOwners = new HashMap<String, TerrainOwner>();
-    
+
 	/**
 	 * Console admin messages
 	 *
@@ -68,9 +68,15 @@ public class Terrains extends JavaPlugin {
 	    pm = server.getPluginManager();
 	    plugin = this;
 	    scheduler = server.getScheduler();
-	
+	    
+	    /* Version testing */
+	    if (McVersionHandler.KeepDecimalOfMcVersion() >= 13.0) {
+	    	logger.info("Veuillez télécharger la version 1.2.0 du plugin, conçue pour MC 1.13+");
+	    	pm.disablePlugin(this);
+	    }
+	    
 	    /* Rebooted version Msg */
-	    logger.info("[Terrains] is the Codisimus [ChunkOwn] plugin forked by ArVdC for MC 1.12 in a french version.");
+	    logger.info("[Terrains] is the Codisimus [ChunkOwn] plugin forked by ArVdC for MC 1.12.2 in a french version.");
 	     
 	
 	    /* Disable this plugin if Vault is not present */
@@ -121,7 +127,7 @@ public class Terrains extends JavaPlugin {
 	    pm.registerEvents(new TrAnimalsListener(), this);
 	    pm.registerEvents(new TrDamageListener(), this);
 	    pm.registerEvents(new TrExplosionListener(), this);
-	    pm.registerEvents(new TrInteractionListener(), this);
+    	pm.registerEvents(new TrInteractionListener(), this);
 	    pm.registerEvents(new TrMvtListener(), this);
 	    pm.registerEvents(new TrChatListener(), this);
 	    pm.registerEvents(new TrOnJoin(), this);

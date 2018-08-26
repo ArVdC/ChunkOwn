@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
  * @author Codisimus @author ArVdC
  */
 public class TrInteractionListener implements Listener {
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
+	@EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
         // Return if the Event was arm failing
         Action action = event.getAction();
@@ -30,13 +30,13 @@ public class TrInteractionListener implements Listener {
         switch (blockE.getType()) {
 
         	/*  Owner actions */
-        
+
         	/* Doors, Trap Doors an Fence Gates */
 	        case WOOD_DOOR: 
 	        case WOODEN_DOOR: 
 	        case ACACIA_DOOR: 
 	        case BIRCH_DOOR: 
-	        case DARK_OAK_DOOR: 
+	        case DARK_OAK_DOOR:
 	        case JUNGLE_DOOR: 
 	        case SPRUCE_DOOR:
 	        case IRON_DOOR:
@@ -46,14 +46,14 @@ public class TrInteractionListener implements Listener {
 	        case FENCE_GATE: 
 	        case ACACIA_FENCE_GATE: 
 	        case BIRCH_FENCE_GATE: 
-	        case DARK_OAK_FENCE_GATE: 
+	        case DARK_OAK_FENCE_GATE:
 	        case JUNGLE_FENCE_GATE:
 	        case SPRUCE_FENCE_GATE:
 	        /* Redstone activation */
 	        case DIODE_BLOCK_OFF:
 	        case DIODE_BLOCK_ON:
 	        case REDSTONE_COMPARATOR_OFF: 
-	        case REDSTONE_COMPARATOR_ON: 
+	        case REDSTONE_COMPARATOR_ON:
 	        case LEVER:
 		    /* Containers */
 	        case FLOWER_POT:
@@ -75,9 +75,9 @@ public class TrInteractionListener implements Listener {
 	        case PINK_SHULKER_BOX:
 	        case PURPLE_SHULKER_BOX:
 	        case RED_SHULKER_BOX:
-	        case SILVER_SHULKER_BOX:
 	        case WHITE_SHULKER_BOX:
 	        case YELLOW_SHULKER_BOX:
+	        case SILVER_SHULKER_BOX:
 	            // Return if the Event was not a right-click
 	            if (action != Action.RIGHT_CLICK_BLOCK) {
 	                return;

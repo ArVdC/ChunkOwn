@@ -21,7 +21,7 @@ import org.bukkit.event.vehicle.VehicleEnterEvent;
  * @author Codisimus @author ArVdC
  */
 public class TrVehicleListener implements Listener {
-	
+
     /**
      * Within an OwnedChunk only the Owner, a Co-Owner, or an Admin can enter a vehicle
      *
