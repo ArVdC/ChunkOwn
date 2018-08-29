@@ -30,33 +30,58 @@ public class TrInteractionListener implements Listener {
         switch (blockE.getType()) {
 
         	/*  Owner actions */
-
+        
         	/* Doors, Trap Doors an Fence Gates */
-	        case WOOD_DOOR: 
-	        case WOODEN_DOOR: 
-	        case ACACIA_DOOR: 
-	        case BIRCH_DOOR: 
+	        case ACACIA_DOOR:
+	        case BIRCH_DOOR:
+	        case OAK_DOOR:
 	        case DARK_OAK_DOOR:
-	        case JUNGLE_DOOR: 
+	        case JUNGLE_DOOR:
 	        case SPRUCE_DOOR:
 	        case IRON_DOOR:
-	        case IRON_DOOR_BLOCK:
-	        case TRAP_DOOR:
+	        case ACACIA_TRAPDOOR:
+	        case BIRCH_TRAPDOOR:
+	        case OAK_TRAPDOOR:
+	        case DARK_OAK_TRAPDOOR:
+	        case JUNGLE_TRAPDOOR:
+	        case SPRUCE_TRAPDOOR:
 	        case IRON_TRAPDOOR:
-	        case FENCE_GATE: 
 	        case ACACIA_FENCE_GATE: 
-	        case BIRCH_FENCE_GATE: 
-	        case DARK_OAK_FENCE_GATE:
+	        case BIRCH_FENCE_GATE:
+	        case OAK_FENCE_GATE:
+	        case DARK_OAK_FENCE_GATE: 
 	        case JUNGLE_FENCE_GATE:
 	        case SPRUCE_FENCE_GATE:
 	        /* Redstone activation */
-	        case DIODE_BLOCK_OFF:
-	        case DIODE_BLOCK_ON:
-	        case REDSTONE_COMPARATOR_OFF: 
-	        case REDSTONE_COMPARATOR_ON:
+	        case REPEATER:
+	        case COMPARATOR:
 	        case LEVER:
-		    /* Containers */
+		    /* FLowers and Saplings */
 	        case FLOWER_POT:
+	        case SUNFLOWER:
+	        case DANDELION_YELLOW:
+	        case CHORUS_FLOWER:
+	        case POTTED_ACACIA_SAPLING:
+	        case POTTED_BIRCH_SAPLING:
+	        case POTTED_OAK_SAPLING:
+	        case POTTED_DARK_OAK_SAPLING:
+	        case POTTED_JUNGLE_SAPLING:
+	        case POTTED_SPRUCE_SAPLING:
+	        case POTTED_ALLIUM:
+	        case POTTED_AZURE_BLUET:
+	        case POTTED_BLUE_ORCHID:
+	        case POTTED_BROWN_MUSHROOM:
+	        case POTTED_CACTUS:
+	        case POTTED_DANDELION:
+	        case POTTED_DEAD_BUSH:
+	        case POTTED_FERN:
+	        case POTTED_OXEYE_DAISY:
+	        case POTTED_POPPY:
+	        case POTTED_RED_MUSHROOM:
+	        case POTTED_RED_TULIP: 
+	        case POTTED_WHITE_TULIP:
+	        case POTTED_PINK_TULIP:
+	        case POTTED_ORANGE_TULIP: 
 		    /* Inventories */
 	        case HOPPER:
 	        case DROPPER:
@@ -75,9 +100,9 @@ public class TrInteractionListener implements Listener {
 	        case PINK_SHULKER_BOX:
 	        case PURPLE_SHULKER_BOX:
 	        case RED_SHULKER_BOX:
+	        case LIGHT_GRAY_SHULKER_BOX:
 	        case WHITE_SHULKER_BOX:
 	        case YELLOW_SHULKER_BOX:
-	        case SILVER_SHULKER_BOX:
 	            // Return if the Event was not a right-click
 	            if (action != Action.RIGHT_CLICK_BLOCK) {
 	                return;
@@ -92,18 +117,25 @@ public class TrInteractionListener implements Listener {
 	        /*  Public actions */
 	          
 		    /* Redstone activation */
-	        case WOOD_BUTTON:
+	        case ACACIA_BUTTON:
+	        case BIRCH_BUTTON:
+	        case OAK_BUTTON:
+	        case DARK_OAK_BUTTON:
+	        case JUNGLE_BUTTON:
+	        case SPRUCE_BUTTON:
 	        case STONE_BUTTON:
 			/* Containers */
 	        case CAULDRON:
 			/* Inventories */
-	        case ENCHANTMENT_TABLE:
+	        case ENCHANTING_TABLE:
 	        case BREWING_STAND:
 	        case JUKEBOX :
+	        case DAMAGED_ANVIL:
+	        case CHIPPED_ANVIL:
 	        case ANVIL:
 	        case FURNACE:
-	        case BURNING_FURNACE:
-	        case WORKBENCH:
+	        case FURNACE_MINECART: // TODO
+	        case CRAFTING_TABLE: // TODO
 	        case CHEST:
 	        case ENDER_CHEST:
 	        	// Return if the Event was not a right-click
@@ -111,10 +143,15 @@ public class TrInteractionListener implements Listener {
 	                return;
 	            }
 			/* Redstone activation */
-	        case STONE_PLATE:
-	        case GOLD_PLATE:
-	        case IRON_PLATE:
-	        case WOOD_PLATE:
+	        case ACACIA_PRESSURE_PLATE:
+	        case BIRCH_PRESSURE_PLATE:
+	        case OAK_PRESSURE_PLATE:
+	        case DARK_OAK_PRESSURE_PLATE:
+	        case JUNGLE_PRESSURE_PLATE:
+	        case SPRUCE_PRESSURE_PLATE:
+	        case STONE_PRESSURE_PLATE:
+	        case HEAVY_WEIGHTED_PRESSURE_PLATE:
+	        case LIGHT_WEIGHTED_PRESSURE_PLATE:
 	            // Only permit for 'public' or more authorized 
 	            if (Terrains.canInterractHere(player, blockP, blockE) > 7) {
 	            	if (Terrains.debug) Terrains.logger.info("Cancelling the " + action + " on a " + blockE.getType()); // Debug

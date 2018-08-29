@@ -30,7 +30,7 @@ import org.bukkit.scheduler.BukkitScheduler;
  * @author ArVdC
  */
 public class Terrains extends JavaPlugin {
-	public static Boolean debug = false; /* Activate the debug mode */
+	public static Boolean debug = true; /* Activate the debug mode */
 	static Server server;
 	static Logger logger;
 	static Permission permission;
@@ -49,7 +49,7 @@ public class Terrains extends JavaPlugin {
 	static String dataFolder;
 	public static HashMap<String, OwnedTerrain> ownedTerrains = new HashMap<String, OwnedTerrain>();
 	public static HashMap<String, TerrainOwner> terrainOwners = new HashMap<String, TerrainOwner>();
-
+    
 	/**
 	 * Console admin messages
 	 *
@@ -70,13 +70,13 @@ public class Terrains extends JavaPlugin {
 	    scheduler = server.getScheduler();
 	    
 	    /* Version testing */
-	    if (McVersionHandler.KeepDecimalOfMcVersion() >= 13.0) {
-	    	logger.info("Veuillez télécharger la version 1.2.0 du plugin, conçue pour MC 1.13+");
-	    	pm.disablePlugin(this);
+	    if (McVersionHandler.KeepDecimalOfMcVersion() < 13.0) {
+	    	logger.info("Veuillez télécharger la version 1.0.2 du plugin, conçue pour MC 1.12.2");
+	        pm.disablePlugin(this);
 	    }
-	    
+	
 	    /* Rebooted version Msg */
-	    logger.info("[Terrains] is the Codisimus [ChunkOwn] plugin forked by ArVdC for MC 1.12.2 in a french version.");
+	    logger.info("[Terrains] is the Codisimus [ChunkOwn] plugin forked by ArVdC for MC 1.13+ in a french version.");
 	     
 	
 	    /* Disable this plugin if Vault is not present */

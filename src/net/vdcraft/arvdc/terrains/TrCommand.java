@@ -940,7 +940,8 @@ public class TrCommand implements CommandExecutor {
                         	location.setY(location.getY() + 0.5);
                         	location.setZ(location.getZ() + 0.5);
                             //Play some effect
-                        	player.spawnParticle(Particle.REDSTONE, location, 0, 0.01, 1.0, 0.01, 1);
+                        	Particle.DustOptions dustOptions = new Particle.DustOptions(Color.GREEN, 1);
+                        	player.spawnParticle(Particle.REDSTONE, location, 1, dustOptions); // TODO vert
                         	location.setX(location.getX() - 0.5);
                         	location.setY(location.getY() - 0.5);
                         	location.setZ(location.getZ() - 0.5);
@@ -964,7 +965,8 @@ public class TrCommand implements CommandExecutor {
                         	location.setY(location.getY() + 0.5);
                         	location.setZ(location.getZ() + 0.5);
                             //Play some effect
-                        	player.spawnParticle(Particle.REDSTONE, location, 0, 1.0, 0.01, 0.01, 1);
+                        	Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 1);
+                        	player.spawnParticle(Particle.REDSTONE, location, 1, dustOptions); // TODO rouge
                         	location.setX(location.getX() - 0.5);
                         	location.setY(location.getY() - 0.5);
                         	location.setZ(location.getZ() - 0.5);
@@ -988,7 +990,8 @@ public class TrCommand implements CommandExecutor {
                         	location.setY(location.getY() + 0.5);
                         	location.setZ(location.getZ() + 0.5);
                             //Play some effect
-                        	player.spawnParticle(Particle.REDSTONE, location, 0, 1.0, 1.0, 1.0, 1);
+                        	Particle.DustOptions dustOptions = new Particle.DustOptions(Color.WHITE, 1);
+                        	player.spawnParticle(Particle.REDSTONE, location, 1, dustOptions); // TODO blanc
                         	location.setX(location.getX() - 0.5);
                         	location.setY(location.getY() - 0.5);
                         	location.setZ(location.getZ() - 0.5);

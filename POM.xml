@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.vdcraft.arvdc</groupId>
 	<artifactId>Terrains</artifactId>
-	<version>1.0.2</version>
+	<version>1.2.0</version>
 	<packaging>jar</packaging>	
 	<build>
 		<finalName>Terrains-${project.version}</finalName>
@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.12.2-R0.1-SNAPSHOT</version>
+			<version>1.13-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

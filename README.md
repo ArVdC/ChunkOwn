@@ -1,5 +1,5 @@
 ## Plugin Bukkit pour la protection des terrains
-[Terrains] est le plugin [[ChunkOwn]](https://dev.bukkit.org/projects/chunkown) créé par [@Codisimus](https://github.com/Codisimus) forké par ArVdC pour MC 1.12.2 dans une version française.
+[Terrains] est le plugin [[ChunkOwn]](https://dev.bukkit.org/projects/chunkown) créé par [@Codisimus](https://github.com/Codisimus) forké par ArVdC pour MC 1.13+ dans une version française.
 ![Terrains](https://media-elerium.cursecdn.com/avatars/72/496/636163394454471337.png "Codisimus ChunkOwn")
 
 ### FONCTIONNALITES
@@ -65,7 +65,8 @@ Restez informé de toute intrusion d'un joueur sur l'un de vos [terrains].
 
 
 ### COMPATIBILITE
-* v1.0.0: Le plugin a été créé pour MC 1.12.2 mais cela devrait fonctionner avec des versions plus anciennes. _N'a jamais été retro-testé_
+* v1.0.1: Le plugin a été adapté pour MC 1.13 mais cela devrait continuer de fonctionner avec des versions plus anciennes.
+* v1.0.0: Le plugin a été créé pour MC 1.12+ mais cela devrait fonctionner avec des versions plus anciennes. _N'a jamais été retro-testé_
 
 
 ### TODO
